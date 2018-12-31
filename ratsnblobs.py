@@ -13,7 +13,7 @@ animation_flag = False #анимация
 side_help_flag = False #help on the game screen
 reborn_flag = True #перерождение с полным HP на каждом уровне
 numpad_movement_flag = True #управление с нумпада
-fixed_view_flag = False #фиксированный размер обзора
+fixed_view_flag = True #фиксированный размер обзора
 diagonal_fridges_flag = True #перемещение холодильничков по диагонали
 height_of_view = width_of_view = 7
 
@@ -766,6 +766,8 @@ class Level(metaclass = abc.ABCMeta):
         '''если установлен generate_map, то width и height могут быть изменены'''
         assert bool(field_walls_arg) == bool(obstacles_arg)
         
+        self._width, self._height = width, height
+        
         global l
         l = self
 
@@ -863,7 +865,6 @@ class Level(metaclass = abc.ABCMeta):
 
             return field_walls, obstacles
     
-    @abc.abstractmethod
     def generate_map(self):
         '''генерирует карту'''
         raise NotImplementedError
@@ -994,11 +995,9 @@ class Level_1(Level):
         #field_walls[0][0] = field_walls[0][1] = field_walls[1][0] = True
 
     def monsters(self):
-        Rat(3, 2)
-        #Rat(3, 2)
-        #Rat(3, 2)
+        Rat(0, 2)
         Rat(4, 2)
-        Rat(5, 2)
+        Rat(4, 3)
         Rat(7, 0)
         Rat(9, 2)
 
@@ -1058,9 +1057,9 @@ game = Game()
 player = None
 
 #Level_worm()
-#Level_1()
+Level_1()
 #Level_empty()
-Level_fridges()
+#Level_fridges()
 
 #TODO подумать здесь
 height, width = l.height, l.width
