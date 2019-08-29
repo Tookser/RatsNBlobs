@@ -1,6 +1,6 @@
 '''
 Классы монстров.
-Включается только "include"-ом
+Включается только exec-ом
 '''
 
 
@@ -9,7 +9,8 @@ class Rat(Creature):
     def __init__(self, x, y):
         #super(Rat, self).__init__(x, y, rat_health, rat_damage, \
         #['red', 'darkest gray', 'darker gray', 'gray'], 'r')
-        super().__init__(x, y, 3, 1, ['red', 'darkest gray', 'darker gray', 'gray'], 'r')
+        #цвет light_gray определяется в Vizualization.__init__
+        super().__init__(x, y, 3, 1, ['red', 'dark light_gray', 'dark light_gray', 'light_gray'], 'r')
 
     def turn(self):
         if abs(player.x - self.x) <= 1 and abs(player.y - self.y) <= 1:
@@ -18,7 +19,22 @@ class Rat(Creature):
             dx, dy = random.choice(neighbour_cells)
             self.move(self.x + dx, self.y + dy)
 
-class RatS(Rat):
+
+class FatRat(Creature):
+    '''много хп и больно бьёт, но стоит на месте'''
+    def __init__(self, x, y):
+        #super(Rat, self).__init__(x, y, rat_health, rat_damage, \
+        #['red', 'darkest gray', 'darker gray', 'gray'], 'r')
+        #цвет light_gray определяется в Vizualization.__init__
+        super().__init__(x, y, 10, 4, ['red', 'red', \
+                                    'dark light_gray', 'dark light_gray', 'dark light_gray', 'dark light_gray',\
+                                    'light_gray', 'light_gray', 'light_gray', 'light_gray', 'green'], 'r')
+        
+    def turn(self):
+        if abs(player.x - self.x) <= 1 and abs(player.y - self.y) <= 1:
+            self.move(player.x, player.y)
+
+class RatSmart(Rat):
     def turn(self):
         '''work only if player exists
         copypasted from wiki'''
@@ -57,6 +73,11 @@ class RatS(Rat):
         t += 1
         self.move(x, y)
 
+    @property
+    def name(self):
+        return "Rat"
+
+     
 class Blob(Creature):
     def __init__(self, x, y):
         #super(Blob, self).__init__(x, y, 1, 0, ['red', 'lime'], 'b')
@@ -79,7 +100,7 @@ class Blob(Creature):
 
         for e in area:
             x, y = self.x + e[0], self.y + e[1]
-            if x in range(width) and y in range(height):
+            if x in range(l.width) and y in range(l.height):
                 if l.is_monster_in(x, y):
                     field[x][y][0].suffer(self._blowdamage)
 
